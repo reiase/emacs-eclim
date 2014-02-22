@@ -49,7 +49,7 @@
     (candidates (eclim--completion-candidates))
     (meta (eclim--completion-documentation arg))
     (no-cache (equal arg ""))
-    (ignore-case t)
+    ;(ignore-case t)
     (sorted t)
     (crop (when (string-match "(" arg)
             (substring arg 0 (match-beginning 0))))

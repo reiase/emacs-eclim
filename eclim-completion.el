@@ -58,6 +58,10 @@
               (java-mode
                (assoc-default 'completions
                               (eclim/execute-command "java_complete" "-p" "-f" "-e" ("-l" "standard") "-o")))
+              ((scala-mode scala-mode2)
+               (assoc-default 'completions 
+                              (list (cons 'completions 
+                                          (eclim/execute-command "scala_complete" "-p" "-f" "-e" ("-l" "standard") "-o")))))
               ((xml-mode nxml-mode)
                (eclim/execute-command "xml_complete" "-p" "-f" "-e" "-o"))
               (ruby-mode
@@ -78,7 +82,7 @@
   "Returns the part of the completion candidate to be displayed
 in a completion menu."
   (assoc-default (case major-mode
-                   (java-mode 'info)
+                   ((java-mode scala-mode scala-mode2)'info)
                    (t 'completion)) candidate))
 
 (defun eclim--completion-candidates ()
@@ -153,7 +157,7 @@ buffer."
   (setq eclim--completion-start
         (save-excursion
           (case major-mode
-            ((java-mode javascript-mode js-mode ruby-mode php-mode)
+            ((java-mode javascript-mode js-mode ruby-mode php-mode scala-mode scala-mode2)
              (progn
                (ignore-errors (beginning-of-thing 'symbol))
                ;; Completion candidates for annotations don't include '@'.
@@ -210,6 +214,7 @@ buffer."
 (defun eclim--completion-action ()
   (case major-mode
     ('java-mode (eclim--completion-action-java))
+    ('scala-mode (eclim--completion-action-java))
     ('nxml-mode (eclim--completion-action-xml))
     (t (eclim--completion-action-default))))
 
